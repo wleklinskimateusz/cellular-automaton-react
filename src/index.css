@@ -1,0 +1,16 @@
+.dead {
+  background-color: #000;
+  width: 10px;
+  height: 10px;
+}
+
+.alive {
+  background-color: #fff;
+  width: 10px;
+  height: 10px;
+}
+
+.automaton {
+  display: flex;
+  flex-direction: row;
+}
