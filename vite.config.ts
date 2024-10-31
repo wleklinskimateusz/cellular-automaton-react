@@ -14,4 +14,5 @@ export default defineConfig({
   build: {
     target: "esnext",
   },
+  base: "https://wleklinskimateusz.github.io/cellular-automaton-react/",
 });
