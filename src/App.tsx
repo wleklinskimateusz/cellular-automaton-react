@@ -1,67 +1,73 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import "./App.css";
 import { CellularAutomaton } from "wasm-elementary-cellular-automaton";
-
+import { Input } from "@/components/ui/input";
+import { Button } from "./components/ui/button";
+import { cn } from "./lib/utils";
 
 const aliveInTheMiddle = new Uint8Array(128).fill(0);
 aliveInTheMiddle[64] = 1;
 
-const initialAutomaton = CellularAutomaton.new(30, aliveInTheMiddle);
-
 function App() {
   const [vector, setVector] = useState<number[]>(new Array(128).fill(0));
-  const [automaton, setAutomaton] = useState<CellularAutomaton>(initialAutomaton);
-  const [rule, setRule] = useState<number>(30);
+  const [isRunning, setIsRunning] = useState(false);
+  const automaton = useRef<CellularAutomaton>(
+    CellularAutomaton.new(30, aliveInTheMiddle)
+  );
 
-  useEffect(() => {
-    setAutomaton(CellularAutomaton.new(rule, aliveInTheMiddle));
-  }, [rule]);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const intervalRef = useRef<number | null>(null);
+  const stop = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    setIsRunning(false);
+  };
+
+  const start = () => {
+    if (intervalRef.current) return;
+    setIsRunning(true);
+    intervalRef.current = setInterval(() => {
+      automaton.current.step();
+      setVector(Array.from(automaton.current.get_state()));
+    }, 100);
+  };
+
+  const reset = () => {
+    stop();
+    automaton.current.reset();
+    setVector(Array.from(automaton.current.get_state()));
+  };
 
   return (
     <>
-      <input type="number" value={rule} min={0} max={255} onChange={(e) => setRule(parseInt(e.target.value))} />
-      <div className="automaton">
-        {vector.map((cell, index) => {
-          return (
-            <div key={index} className={cell === 1 ? "alive" : "dead"}></div>
-          );
-        })}
+      <Input
+        type="number"
+        min={0}
+        max={255}
+        onChange={(e) => {
+          const rule = parseInt(e.target.value);
+          automaton.current.set_rule(rule);
+        }}
+      />
+      <div className="flex flex-row  justify-center">
+        {vector.map((cell, index) => (
+          <div
+            key={index}
+            className={cn("w-2 h-2", cell === 0 ? "bg-black" : "bg-white")}
+          />
+        ))}
       </div>
 
-      <button
-        onClick={() => {
-          if (intervalRef.current) return;
-          const interval = setInterval(() => {
-            automaton.step();
-            setVector(Array.from(automaton.get_state()));
-          }, 100);
-          intervalRef.current = interval;
-        }}
-      >
-        Start
-      </button>
-
-      <button
-        onClick={() => {
-          if (intervalRef.current) {
-            clearInterval(intervalRef.current);
-            intervalRef.current = null;
-          }
-        }}
-      >
-        Stop
-      </button>
-
-      <button
-        onClick={() => {
-          setAutomaton(CellularAutomaton.new(rule, aliveInTheMiddle));
-          setVector(new Array(128).fill(0));
-        }}
-      >
-        Reset
-      </button>
+      <div className="flex gap-4 p-4 items-center justify-center">
+        {isRunning ? (
+          <Button onClick={stop}>Stop</Button>
+        ) : (
+          <Button onClick={start}>Start</Button>
+        )}
+        <Button onClick={reset}>Reset</Button>
+      </div>
     </>
   );
 }
