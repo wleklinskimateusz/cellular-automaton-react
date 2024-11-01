@@ -60,7 +60,11 @@ const ActionButtons = ({ state, send }: { state: State; send: Send }) => {
         <Button size="lg" onClick={() => send({ type: "run" })}>
           Start
         </Button>
-        <Button size="lg" onClick={() => send({ type: "edit" })}>
+        <Button
+          variant="secondary"
+          size="lg"
+          onClick={() => send({ type: "edit" })}
+        >
           Edit
         </Button>
       </>
@@ -73,7 +77,11 @@ const ActionButtons = ({ state, send }: { state: State; send: Send }) => {
         <Button size="lg" onClick={() => send({ type: "stop" })}>
           Stop
         </Button>
-        <Button size="lg" onClick={() => send({ type: "reset" })}>
+        <Button
+          variant="secondary"
+          size="lg"
+          onClick={() => send({ type: "reset" })}
+        >
           Reset
         </Button>
       </>
@@ -85,7 +93,11 @@ const ActionButtons = ({ state, send }: { state: State; send: Send }) => {
         <Button size="lg" onClick={() => send({ type: "run" })}>
           Run
         </Button>
-        <Button size="lg" onClick={() => send({ type: "reset" })}>
+        <Button
+          variant="secondary"
+          size="lg"
+          onClick={() => send({ type: "reset" })}
+        >
           Reset
         </Button>
       </>
