@@ -1,5 +1,4 @@
-name: Deploy static content to Pages
-
+name: Build And Test
 on:
   # Runs on pushes targeting the default branch
   push:
