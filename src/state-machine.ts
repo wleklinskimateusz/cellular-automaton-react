@@ -22,8 +22,7 @@ export const automatonMachineDefinition = setup({
             | { type: "stop" }
             | { type: "reset" }
             | { type: "save" }
-            | { type: "edit" }
-            | { type: "reverse" },
+            | { type: "edit" },
         context: {} as AutomatonContext,
     },
 }).createMachine({
@@ -74,11 +73,6 @@ export const automatonMachineDefinition = setup({
                 "set.vector": {
                     actions: assign({
                         vector: ({ event }) => event.vector,
-                    }),
-                },
-                reverse: {
-                    actions: assign({
-                        vector: ({ context }) => context.vector.reverse(),
                     }),
                 },
             },

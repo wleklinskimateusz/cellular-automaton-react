@@ -49,14 +49,9 @@ function App() {
 const ActionButtons = ({ state, send }: { state: State; send: Send }) => {
   if (state === "editing") {
     return (
-      <>
-        <Button size="lg" onClick={() => send({ type: "save" })}>
-          Save
-        </Button>
-        <Button size="lg" onClick={() => send({ type: "reverse" })}>
-          Reverse
-        </Button>
-      </>
+      <Button size="lg" onClick={() => send({ type: "save" })}>
+        Save
+      </Button>
     );
   }
   if (state === "idle") {
