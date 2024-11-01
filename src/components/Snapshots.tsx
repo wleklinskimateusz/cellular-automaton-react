@@ -54,7 +54,7 @@ export const Snapshots = ({
 
   return (
     <div
-      className="border border-black"
+      className="border border-black mx-auto"
       style={{
         height: maxRows * squareSize,
         width: cols * squareSize,
