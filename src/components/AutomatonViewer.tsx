@@ -15,7 +15,10 @@ export const AutomatonViewer = ({
       {fields.map((field, index) => (
         <div
           key={index}
-          className={cn("w-4 h-4", field === 0 ? "bg-black" : "bg-white")}
+          className={cn(
+            "2xl:w-4 2xl:h-4 lg:h-2 lg:w-2  h-1 w-1 ",
+            field === 0 ? "bg-black" : "bg-white"
+          )}
         />
       ))}
     </div>
