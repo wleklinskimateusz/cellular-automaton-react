@@ -12,7 +12,7 @@ export const InitialStateEditor = ({
   return (
     <div
       className={cn(
-        "flex flex-row mx-auto justify-center gap-1 bg-gray-500 p-4 rounded-lg w-[130rem]",
+        "2xl:flex hidden flex-row mx-auto justify-center gap-1 bg-gray-500 p-4 rounded-lg w-[130rem]",
         "absolute left-1/2 -translate-x-1/2"
       )}
     >

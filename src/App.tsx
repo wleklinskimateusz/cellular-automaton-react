@@ -14,7 +14,7 @@ function App() {
   const [
     {
       value: state,
-      context: { vector: uIntVector, resetCounter, rule },
+      context: { vector: uIntVector, resetCounter, rule, boundary },
     },
     send,
   ] = useMachine(automatonMachineDefinition);
@@ -30,9 +30,11 @@ function App() {
         state={state}
         vector={vector}
         rule={rule}
+        boundary={boundary}
         onChangeRule={(rule) => send({ type: "rule.set", rule })}
         onToggleCell={(index) => send({ type: "toggle.cell", index })}
         onSetVector={(vector) => send({ type: "set.vector", vector })}
+        onSetBoundary={(boundary) => send({ type: "boundary.set", boundary })}
       />
       <div className="flex flex-row w-[128rem] h-32 mx-auto justify-center">
         <AutomatonViewer fields={vector} state={state} />

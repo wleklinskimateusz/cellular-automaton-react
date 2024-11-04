@@ -7,6 +7,7 @@ type AutomatonContext = {
     automaton: CellularAutomaton;
     interval: NodeJS.Timeout | null;
     resetCounter: number;
+    boundary: "periodic" | "fixed";
 };
 
 const initialVector = new Uint8Array(128).fill(0);
@@ -17,6 +18,7 @@ export const automatonMachineDefinition = setup({
             | { type: "toggle.cell"; index: number }
             | { type: "set.vector"; vector: Uint8Array }
             | { type: "rule.set"; rule: number }
+            | { type: "boundary.set"; boundary: "periodic" | "fixed" }
             | { type: "run" }
             | { type: "step" }
             | { type: "stop" }
@@ -29,7 +31,8 @@ export const automatonMachineDefinition = setup({
     context: {
         rule: 30,
         vector: initialVector,
-        automaton: CellularAutomaton.new(30, initialVector),
+        boundary: "periodic",
+        automaton: CellularAutomaton.new(30, initialVector, true),
         interval: null,
         resetCounter: 0,
     },
@@ -50,6 +53,9 @@ export const automatonMachineDefinition = setup({
                 ({ context }) => {
                     context.automaton.set_initial_state(context.vector);
                     context.automaton.set_rule(context.rule);
+                    context.automaton.set_periodic_boundary(
+                        context.boundary === "periodic",
+                    );
                 },
             ],
             on: {
@@ -73,6 +79,11 @@ export const automatonMachineDefinition = setup({
                 "set.vector": {
                     actions: assign({
                         vector: ({ event }) => event.vector,
+                    }),
+                },
+                "boundary.set": {
+                    actions: assign({
+                        boundary: ({ event }) => event.boundary,
                     }),
                 },
             },
